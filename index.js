@@ -70,7 +70,8 @@ BinaryHeapR.prototype.pop = BinaryHeapR.prototype.pull = function(){
     if(this.size === 0) return null;
 
     var item = this.data[1];
-    this.data[1] = this.data[this.size--];
+    this.data[1] = this.data[this.size];
+    delete this.data[this.size--];
 
     var parent = 1;
     var child = parent << 1;
