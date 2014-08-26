@@ -1,7 +1,7 @@
 {
     "author" : "Roberto Sales <robertosalesc@dcc.ufba.br>",
     "name": "binaryheap-resizable",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "binary heap implemented over a resizable circular buffer",
     "keywords": ["binary", "heap", "circular buffer", "tree"],
     "license": "MIT",
