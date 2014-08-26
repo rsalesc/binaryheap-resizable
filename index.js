@@ -49,18 +49,15 @@ BinaryHeapR.prototype.push = BinaryHeapR.prototype.insert = function(){
 
     // insert accordingly to heap rules, making necessary swaps
     for(i = 0; i < arguments.length; i++){
-        var index = this.size + 1;
-        this.data[index] = arguments[i];
-        var parent = index >> 1;
-        while(index > 1 && this._predicate(this.data[index], this.data[parent])){
-            this.swap(index, parent);
-            index = parent;
-            parent = index >> 1;
+        this.data[++this.size] = arguments[i];
+        var child = this.size;
+        var parent = child >> 1;
+        while(child > 1 && this._predicate(this.data[child], this.data[parent])){
+            this.swap(child, parent);
+            child = parent;
+            parent = child >> 1;
         }
     }
-
-    // recalculate size
-    this.size += i;
 
     // return number current number of items in CBuffer
     return this.size;
