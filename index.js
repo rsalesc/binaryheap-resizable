@@ -89,9 +89,8 @@ BinaryHeapR.prototype.pop = BinaryHeapR.prototype.pull = function(){
                 this.resize(this.size << 1);
             }
         }
-
-        return item;
     }
+    return item;
 };
 
 BinaryHeapR.prototype.predicate = function(fn){
