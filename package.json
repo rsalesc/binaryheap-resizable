@@ -1,6 +1,6 @@
 {
     "author" : "Roberto Sales <robertosalesc@dcc.ufba.br>",
-    "name": "cbuffer-binaryheap",
+    "name": "binaryheap-resizable",
     "version": "0.0.1",
     "description": "binary heap implemented over a resizable circular buffer",
     "keywords": ["binary", "heap", "circular buffer", "tree"],
@@ -9,10 +9,9 @@
     "readmeFilename": "README.md",
     "repository":{
         "type": "git",
-        "url": "http://github.com/skywalkerd/cbuffer-binaryheap.git"
+        "url": "http://github.com/skywalkerd/binaryheap-resizable.git"
     },
     "dependencies":
     {
-        "cbuffer-resizable": "~0.0.1"
     }
 }

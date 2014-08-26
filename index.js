@@ -2,29 +2,45 @@
  * Created by root on 25/08/14.
  */
 
-var buffer = require('cbuffer-resizable');
+var util = require('util');
 
-function CBinaryHeap(predicate) {
+function BinaryHeapR(capacity) {
 // handle cases where "new" keyword wasn't used
-    if (!(this instanceof CBinaryHeap)) {
-        // multiple conditions need to be checked to properly emulate Array
-        if (arguments.length > 1 || typeof arguments[0] !== 'number') {
-            return CBinaryHeap.apply(new CBufferR(arguments.length), arguments);
-        } else {
-            return new CBinaryHeap(arguments[0]);
-        }
+    if (!(this instanceof BinaryHeapR)) {
+       return new BinaryHeapR(capacity);
     }
-    this._predicate = this.predicate || function(a, b){ return a > b};
-    CBufferR.prototype.constructor.apply(this, Array.prototype.slice.call(arguments, 1));
+
+    this._predicate = function(a, b){ return a > b};
+
+    this.data = new Array(capacity + 1);
+    this.data[0] = null;
+
+    this.length = this._initialLength = capacity;
+    this.size = 0;
+    this._resizeFactor = 2;
 }
 
-util.inherits(CBinaryHeap, CBufferR);
+BinaryHeapR.prototype.constructor = BinaryHeapR;
 
-CBinaryHeap.prototype.constructor = CBinaryHeap;
+BinaryHeapR.prototype.resizeFactor = function(value){
+    if(value === undefined || value == null) return this._resizeFactor;
+    this._resizeFactor = value;
+};
 
-CBinaryHeap.prototype.push = function(){
+BinaryHeapR.prototype.resize = function(new_length){
+    var data = new Array(new_length + 1);
+    data[0] = null;
+    for(var i = 1; i <= this.size && i <= new_length; i++){
+        data[i] = this.data[i];
+    }
+    this.data = data;
+    this.length = new_length;
+};
+
+BinaryHeapR.prototype.push = BinaryHeapR.prototype.insert = function(){
     var i = 0;
     // check if buffer is about to be overflowed
+    // expand it if its too small
     var future_size = this.size + arguments.length;
     if (future_size > this.length) {
         var future_length = Math.round(this.length * this._resizeFactor);
@@ -33,32 +49,70 @@ CBinaryHeap.prototype.push = function(){
 
     // insert accordingly to heap rules, making necessary swaps
     for(i = 0; i < arguments.length; i++){
-        var index = (this.end + i + 1) % this.length;
+        var index = this.size + 1;
         this.data[index] = arguments[i];
-        var noncircular_index = index - this.start;
-        if(noncircular_index < 0) noncircular_index = this.length + noncircular_index;
-        var parent = (((noncircular_index + 1) << 1) - 1 + this.start) % this.length;
-        while(this._predicate(this.data[index], this.data[parent])){
+        var parent = index >> 1;
+        while(index > 1 && this._predicate(this.data[index], this.data[parent])){
             this.swap(index, parent);
-            if(parent == this.start) break;
             index = parent;
-            noncircular_index = index - this.start;
-            if(noncircular_index < 0) noncircular_index = this.length + noncircular_index;
-            parent = (((noncircular_index + 1) << 1) - 1 + this.start) % this.length;
+            parent = index >> 1;
         }
     }
 
     // recalculate size
     this.size += i;
 
-    // recalculate end
-    this.end = (this.end + i) % this.length;
-
     // return number current number of items in CBuffer
     return this.size;
 };
 
-CBinaryHeap.prototype.predicate = function(fn){
+BinaryHeapR.prototype.pop = BinaryHeapR.prototype.pull = function(){
+    if(this.size === 0) return null;
+
+    var item = this.data[1];
+    this.data[1] = this.data[this.size--];
+
+    var parent = 1;
+    var child = parent << 1;
+    while(child <= this.size){
+        if(child < this.size){  // has 2 childs
+            child = this._predicate(this.data[child], this.data[child + 1]) ? child : child + 1;
+        }
+
+        if(this._predicate(this.data[parent], this.data[child])) break;
+        this.swap(parent, child);
+
+        parent = child;
+        child = parent << 1;
+
+        if(this.size << 1 > this._initialLength) {
+            // shrink array if too big
+            if (this.size < this.length / (this._resizeFactor * this._resizeFactor)) {
+                this.resize(this.size << 1);
+            }
+        }
+
+        return item;
+    }
+};
+
+BinaryHeapR.prototype.predicate = function(fn){
     if(!(fn instanceof Function)) return this._predicate;
     this._predicate = fn;
 };
+
+BinaryHeapR.prototype.swap  = function(a, b){
+    var tmp = this.data[a];
+    this.data[a] = this.data[b];
+    this.data[b] = tmp;
+};
+
+BinaryHeapR.prototype.toArray = function(){
+    var array = new Array(this.size);
+    for(var i = 0; i < this.size; ){
+        array[i] = this.data[++i];
+    }
+    return array;
+};
+
+module.exports = BinaryHeapR;
