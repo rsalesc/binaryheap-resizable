@@ -7,7 +7,7 @@ var util = require('util');
 function BinaryHeapR(capacity, predicate) {
 // handle cases where "new" keyword wasn't used
     if (!(this instanceof BinaryHeapR)) {
-       return new BinaryHeapR(capacity);
+       return new BinaryHeapR(capacity, predicate);
     }
 
     this._predicate = predicate || function(a, b){ return a > b};

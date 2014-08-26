@@ -4,14 +4,17 @@
 
 var heapProvider = require('./index');
 
-var heap = heapProvider(20);
+var heap = heapProvider(6, function(a,b){
+    console.log("A: " + a.priority);
+    console.log("B: " + b.priority);
+    return a.priority > b.priority});
 
-heap.push(8);
-heap.push(3);
-heap.push(11);
+heap.push({priority: 8});
+heap.push({priority: 3});
+heap.push({priority: 11});
 console.log(heap.toArray());
-heap.push(5);
-heap.push(4);
+heap.push({priority: 5});
+heap.push({priority: 4});
 
 console.log(heap);
 console.log(heap.toArray());
