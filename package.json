@@ -12,7 +12,7 @@
     "readmeFilename": "README.md",
     "repository":{
         "type": "git",
-        "url": "http://github.com/skywalkerd/binaryheap-resizable.git"
+        "url": "http://github.com/rsalesc/binaryheap-resizable.git"
     },
     "devDependencies":
     {
