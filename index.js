@@ -1,6 +1,7 @@
 /**
  * Authored by: Roberto Sales <robertosalesc@dcc.ufba.br> (rsalesc)
  * Name: binaryheap-resizable
+ *
  */
 
 var util = require('util');
