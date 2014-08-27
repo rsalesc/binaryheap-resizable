@@ -1,6 +1,3 @@
-/**
- * Created by root on 25/08/14.
- */
 
 var BinaryHeapR = require('../');
 var expect = require('chai').expect;
@@ -9,7 +6,7 @@ describe("BinaryHeapR", function(){
 
     describe("constructor", function(){
 
-        it("should return always a instanceof BinaryHeapR", function(){
+        it("should return always an instanceof BinaryHeapR", function(){
             expect(new BinaryHeapR(2)).to.be.an.instanceof(BinaryHeapR);
             expect(BinaryHeapR(2)).to.be.an.instanceof(BinaryHeapR);
         });
@@ -31,6 +28,15 @@ describe("BinaryHeapR", function(){
 
         describe("insert(), push()", function(){
             var heap = BinaryHeapR(2);
+
+            it("should throw if no argument is passed", function(){
+                expect(heap.insert).to.throw(/invalid arguments/i);
+            });
+
+            it("should do nothing if an empty array is passed as parameter", function(){
+                expect(function(){ heap.insert([])}).to.not.throw(Error);
+                expect(heap.data).to.deep.equals([null]);
+            });
 
             it("should insert single element", function(){
                 heap.insert(5);
@@ -120,13 +126,19 @@ describe("BinaryHeapR", function(){
     describe("toArray()", function(){
         var heap = BinaryHeapR(5);
 
-        it("should return a raw binary heap elements array", function(){
+        it("should return a real binary heap array", function(){
             heap.insert([5, 11, 8]);
 
             expect(heap.toArray()).to.deep.equals([11, 5, 8]);
         });
     });
 
+    describe("predicate()", function(){
 
+        it("should return a function if no function is passed as parameter", function(){
+            var heap = BinaryHeapR(1);
+            expect(heap.predicate()).to.be.an.instanceof(Function);
+        });
+    });
 
 });

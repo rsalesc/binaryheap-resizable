@@ -1,5 +1,6 @@
 /**
- * Created by root on 25/08/14.
+ * Authored by: Roberto Sales <robertosalesc@dcc.ufba.br> (rsalesc)
+ * Name: binaryheap-resizable
  */
 
 var util = require('util');
@@ -47,6 +48,7 @@ BinaryHeapR.prototype.push = BinaryHeapR.prototype.insert = function(){
     // check if arguments[0] is an array
     if(arguments[0] instanceof Array){
         arguments = arguments[0];
+        if(arguments.length < 1) return;
     }
 
     // check if buffer is about to be overflowed
