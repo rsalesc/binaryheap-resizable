@@ -10,6 +10,8 @@ function BinaryHeapR(capacity, predicate) {
        return new BinaryHeapR(capacity, predicate);
     }
 
+    if(capacity === undefined || typeof capacity !== 'number') throw new Error("initial capacity of binary heap must be passed");
+
     this._predicate = predicate || function(a, b){ return a > b};
 
     this.data = new Array(capacity + 1);
@@ -39,6 +41,14 @@ BinaryHeapR.prototype.resize = function(new_length){
 
 BinaryHeapR.prototype.push = BinaryHeapR.prototype.insert = function(){
     var i = 0;
+    if(arguments.length < 1){
+        throw new Error("invalid arguments");
+    }
+    // check if arguments[0] is an array
+    if(arguments[0] instanceof Array){
+        arguments = arguments[0];
+    }
+
     // check if buffer is about to be overflowed
     // expand it if its too small
     var future_size = this.size + arguments.length;
@@ -63,7 +73,12 @@ BinaryHeapR.prototype.push = BinaryHeapR.prototype.insert = function(){
     return this.size;
 };
 
-BinaryHeapR.prototype.pop = BinaryHeapR.prototype.pull = function(){
+BinaryHeapR.prototype.peek = function(){
+    if(this.size == 0) return null;
+    return this.data[1];
+};
+
+BinaryHeapR.prototype.pull = function(){
     if(this.size === 0) return null;
 
     var item = this.data[1];

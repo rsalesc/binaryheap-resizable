@@ -4,6 +4,9 @@
     "version": "0.0.6",
     "description": "binary heap implemented over a resizable circular buffer",
     "keywords": ["binary", "heap", "circular buffer", "tree"],
+    "scripts" : {
+        "test": "./node_modules/.bin/mocha --reporter spec"
+    },
     "license": "MIT",
     "main": "index.js",
     "readmeFilename": "README.md",
@@ -11,7 +14,9 @@
         "type": "git",
         "url": "http://github.com/skywalkerd/binaryheap-resizable.git"
     },
-    "dependencies":
+    "devDependencies":
     {
+        "chai": "*",
+        "mocha": "*"
     }
 }
