@@ -69,6 +69,14 @@ describe("BinaryHeapR", function(){
 
                 expect(multiheap.data).to.deep.equals([null, 5, 4, 2, 1, 3]);
             });
+
+            it("should throw when null object is trying to be inserted", function(){
+                var fn = function(){
+                    multiheap.insert([null, 0, null]);
+                };
+
+                expect(fn).to.throw(/null object/i);
+            });
         });
 
         describe("peek()", function(){

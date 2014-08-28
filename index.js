@@ -77,13 +77,17 @@ BinaryHeapR.prototype.push = BinaryHeapR.prototype.insert = function(){
 
     // insert accordingly to heap rules, making necessary swaps
     for(i = 0; i < arguments.length; i++){
-        this.data[++this.size] = arguments[i];
-        var child = this.size;
-        var parent = child >> 1;
-        while(child > 1 && this._predicate(this.data[child], this.data[parent])){
-            this.swap(child, parent);
-            child = parent;
-            parent = child >> 1;
+        if(typeof arguments[i] !== 'undefined' && arguments[i] !== null){
+            this.data[++this.size] = arguments[i];
+            var child = this.size;
+            var parent = child >> 1;
+            while(child > 1 && this._predicate(this.data[child], this.data[parent])){
+                this.swap(child, parent);
+                child = parent;
+                parent = child >> 1;
+            }
+        }else{
+            throw new Error("null object cannot be inserted");
         }
     }
 
