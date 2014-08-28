@@ -51,7 +51,7 @@ predicate({relevance: 1}, {});
 predicate({relevance: 1}, {relevance: null});
 ```
 
-Both `predicate()` calls right above will not result in error, since undefined and null are still comparable, producing a unpredictable behavior. It's not what most of programmers want, so, if its not what you wait from the algorithm, you should better use a deep find algorithm which throws an error if an object property is not a solid object, right inside the predicate.
+Both `predicate()` calls right above will not result in error, since undefined and null are still comparable, producing an unpredictable behavior. It's not what most of programmers want, so, if its not what you wait from the algorithm, you should better use a deep find algorithm which throws an error if an object property is not a solid object, right inside the predicate.
 
 In another study-case example we have:
 
