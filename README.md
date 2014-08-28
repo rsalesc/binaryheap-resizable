@@ -31,7 +31,7 @@ var predicate = function(a, b){
 So we have a pseudo-code which:
 
 ```
-predicate(top-element, child-n) is truthy for n 1..heap-size
+predicate(top-element, child-n) is truthy for n 1..top-element-child-count
 ```
 
 We can have a min-heap predicate only by switching the relational operator:
