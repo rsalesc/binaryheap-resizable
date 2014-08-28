@@ -72,7 +72,7 @@ So, it's up to you to control the predicate flow, to prevent errors from ocurryi
 So in version `0.0.7` we introduced new ways of handling predicates. We will be discussing about them right below.
 
 ### Multiple ways of handling predicates
-`>= 0.0.7`
+*`>= 0.0.7`*
 
 In older versions we had only the basic way of dealing with predicates. It was really hard to deal with errors and to keep things going smooth when going through non-existent objects. Version `0.0.7` introduced major changes related to the way predicates were set up. It's important to say that projects that were built on top of older versions are still perfectly compatible with this new version.
 
