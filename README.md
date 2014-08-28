@@ -6,6 +6,12 @@
 # Resizable Binary Heap
 ---
 
+### Installation
+`npm install binaryheap-resizable`
+
+### Testing
+`npm test`
+
 ### Simple usage
 
 ```javascript
