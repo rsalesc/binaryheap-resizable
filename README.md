@@ -52,7 +52,7 @@ predicate({relevance: 1}, {});
 predicate({relevance: 1}, {relevance: null});
 ```
 
-Both `predicate()` calls right above will not result in error, since undefined and null are still comparable. So, if its not the behavior you wait from the algorithm, you should better use a deep find algorithm which throws an error if an object property is not a solid object.
+Both `predicate()` calls right above will not result in error, since undefined and null are still comparable, producing a unpredictable behavior. It's not what most of programmers want, so, if its not what you wait from the algorithm, you should better use a deep find algorithm which throws an error if an object property is not a solid object, right inside the predicate.
 
 In another study-case example we have:
 
@@ -68,7 +68,7 @@ predicate({info: { relevance: 1}}, {});
 Now in both calls above we will notice that an error is throwed. That's because we can't access a non-existent object property. In this case, we can't access the property `relevance` of `undefined`/`null`.
 
 So, it's up to you to control the predicate flow, to prevent errors from ocurrying if necessary or similar things.
-A **deep find** plugin that is capable of returning default values can be **extremely** useful if you want to make thing keep going smooth when executing more complex `predicate()`.
+A **deep find** plugin that is capable of returning default values can be **extremely** useful if you want to make things keep going smooth when executing more complex `predicate()`.
 
 
 
