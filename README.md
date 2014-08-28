@@ -6,6 +6,14 @@
 # Resizable Binary Heap
 ---
 
+### Simple usage
+
+```javascript
+var heap = BinaryHeap(4).predicate().greater('priority');
+// compare objects from the heap by their priority property
+// throw an error if it does not exist
+```
+
 ### What package is that?
 
 Exactly what the package name says it is. It's a resizable binary heap.
