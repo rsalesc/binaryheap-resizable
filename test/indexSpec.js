@@ -23,6 +23,10 @@ describe("BinaryHeapR", function(){
             expect(BinaryHeapR(2)).to.have.property('predicate').that.is.an.instanceof(Function);
             expect(BinaryHeapR(2, function(){})).to.have.property('predicate').that.is.an.instanceof(Function);
         });
+
+        it("should instantiate object from array elements", function(){
+            expect(BinaryHeapR([1, 2, 3]).data).to.deep.equals([null, 3, 1, 2]);
+        });
     });
     describe("data management", function(){
 

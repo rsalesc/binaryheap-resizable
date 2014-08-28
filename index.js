@@ -13,17 +13,26 @@ function BinaryHeapR(capacity, predicate) {
        return new BinaryHeapR(capacity, predicate);
     }
 
-    if(capacity === undefined || typeof capacity !== 'number') throw new Error("initial capacity of binary heap must be passed");
+    if(capacity === undefined) throw new Error("initial capacity of binary heap must be passed");
 
     this._predicate_method = predicate || function(a, b){ return a > b};
     this._predicate_deep = null;
     this._predicate_deep_default = null;
 
-    this.data = new Array(capacity + 1);
-    this.data[0] = null;
+    this.size = 0;
+
+    if(capacity instanceof Array){
+        this.data = new Array(capacity.length + 1);
+        this.data[0]=  null;
+        this.insert(capacity);
+    }else if(typeof capacity === 'number'){
+        this.data = new Array(capacity + 1);
+        this.data[0] = null;
+    }else{
+        throw new Error("initial capacity of binary heap must be passed")
+    }
 
     this.length = this._initialLength = capacity;
-    this.size = 0;
     this._resizeFactor = 2;
 }
 
@@ -159,6 +168,14 @@ BinaryHeapR.prototype.predicate = function(fn){
             return setup(fn, path, def);
         }
     }
+};
+
+BinaryHeapR.prototype.maxHeap = function(path, def){
+    return this.predicate().greater(path, def);
+};
+
+BinaryHeapR.prototype.minHeap = function(path, def){
+    return this.predicate().lesser(path, def);
 };
 
 BinaryHeapR.prototype.reinsert = function(){
