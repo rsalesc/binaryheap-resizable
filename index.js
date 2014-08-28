@@ -5,6 +5,7 @@
  */
 
 var util = require('util');
+var peek = require('peek');
 
 function BinaryHeapR(capacity, predicate) {
 // handle cases where "new" keyword wasn't used
@@ -14,7 +15,9 @@ function BinaryHeapR(capacity, predicate) {
 
     if(capacity === undefined || typeof capacity !== 'number') throw new Error("initial capacity of binary heap must be passed");
 
-    this._predicate = predicate || function(a, b){ return a > b};
+    this._predicate_method = predicate || function(a, b){ return a > b};
+    this._predicate_deep = null;
+    this._predicate_deep_default = null;
 
     this.data = new Array(capacity + 1);
     this.data[0] = null;
@@ -25,6 +28,18 @@ function BinaryHeapR(capacity, predicate) {
 }
 
 BinaryHeapR.prototype.constructor = BinaryHeapR;
+
+BinaryHeapR.prototype._predicate = function(a, b){
+    if(typeof this._predicate_deep === 'string' && this._predicate_deep.length > 0){
+        a = peek(this._predicate_deep)(a) || this._predicate_deep_default;
+        b = peek(this._predicate_deep)(b) || this._predicate_deep_default;
+    }
+    if(typeof a === 'undefined' || typeof b === 'undefined' || a == null || b == null){
+        throw new Error("predicate member values cannot be accessed");
+        return;
+    }
+    return this._predicate_method(a, b);
+};
 
 BinaryHeapR.prototype.resizeFactor = function(value){
     if(value === undefined || value == null) return this._resizeFactor;
@@ -112,8 +127,43 @@ BinaryHeapR.prototype.pull = function(){
 };
 
 BinaryHeapR.prototype.predicate = function(fn){
-    if(!(fn instanceof Function)) return this._predicate;
-    this._predicate = fn;
+    var self = this;
+
+    var setup = function(fn, path, def){
+        path = path || null;
+        def = def || null;
+        self._predicate_method = fn;
+        self._predicate_deep = path;
+        self._predicate_deep_default = def;
+        self.reinsert();
+        return self;
+    };
+
+    if(!(fn instanceof Function)){  // (path, def) for all
+        return{
+            greater: function(path, def){
+                return setup(function(a, b){ return a > b}, path, def);
+            },
+            lesser: function(path, def){
+                return setup(function(a, b){ return a < b}, path, def);
+            }
+        }
+    }
+
+    return{
+        value: function(path, def){
+            return setup(fn, path, def);
+        }
+    }
+};
+
+BinaryHeapR.prototype.reinsert = function(){
+    var old = this.data;
+    this.data = new Array(old.length);
+    this.data[0] = null;
+    for(var i = 1; i <= this.size; i++){
+        this.insert(old[i]);
+    }
 };
 
 BinaryHeapR.prototype.swap  = function(a, b){

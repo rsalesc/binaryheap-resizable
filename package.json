@@ -2,8 +2,8 @@
     "author" : "Roberto Sales <robertosalesc@dcc.ufba.br>",
     "name": "binaryheap-resizable",
     "version": "0.0.6",
-    "description": "binary heap implemented over a resizable circular buffer",
-    "keywords": ["binary", "heap", "circular buffer", "tree"],
+    "description": "binary heap implemented over a resizable array with multiple ways of handling predicates",
+    "keywords": ["binary", "heap", "predicate", "tree", "resizable", "binary heap"],
     "scripts" : {
         "test": "./node_modules/.bin/mocha --reporter spec"
     },
@@ -13,6 +13,9 @@
     "repository":{
         "type": "git",
         "url": "http://github.com/rsalesc/binaryheap-resizable.git"
+    },
+    "dependencies":{
+        "peek": "~0.0.2"
     },
     "devDependencies":
     {

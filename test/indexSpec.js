@@ -133,11 +133,68 @@ describe("BinaryHeapR", function(){
         });
     });
 
-    describe("predicate()", function(){
+    /*describe("reinsert()", function(){
+        var heap = BinaryHeapR(4);
 
-        it("should return a function if no function is passed as parameter", function(){
-            var heap = BinaryHeapR(1);
-            expect(heap.predicate()).to.be.an.instanceof(Function);
+        it("should reallocate array keeping the values intact", function(){
+            heap.insert([5, 3, 1]);
+            heap.reinsert();
+            expect(heap.data).to.equals([null, 5, 3, 1]);
+        });
+    });*/
+
+    describe("predicate()", function(){
+        var heap = BinaryHeapR(2);
+        var fn = function(a, b){ return a > b };
+
+        describe("value()", function(){
+            it("should return `this` object", function(){
+                expect(heap.predicate(fn).value()).to.equals(heap);
+            });
+        });
+
+        it("should compare raw values when deep is not set", function(){
+            var wrap = function(){
+                return heap._predicate(5, 1);
+            };
+            expect(wrap()).to.be.ok;
+            expect(wrap).to.not.throw(/predicate member values/i);
+        });
+
+        it("should throw when comparing raw values with deep set", function(){
+            heap.predicate(fn).value("relevance");
+            expect(function(){ heap._predicate(5, 1)}).to.throw(/predicate member values/i);
+        });
+
+        it("should not throw when comparing raw values with deep set but default isset", function(){
+            heap.predicate(fn).value("relevance", 1);
+            expect(function(){ heap._predicate(5, 1)}).to.not.throw(/predicate member values/i);
+        });
+
+        it("should compare complex objects", function(){
+            heap = BinaryHeapR(2).predicate(fn).value("relevance.priority", 1);
+            var obj1 = {relevance: { priority: 2 }};
+            var obj2 = {};
+            var obj3 = {relevance: { priority: 0 }};
+
+            expect(heap._predicate(obj1, obj2)).to.be.ok;
+            expect(heap._predicate(obj3, obj2)).to.not.be.ok;
+        });
+
+        describe("greater()", function(){
+            it("should generate greater predicate", function(){
+                heap = BinaryHeapR(2).predicate().greater();
+
+                expect(heap._predicate(5, 1)).to.be.ok;
+            });
+        });
+
+        describe("lesser()", function(){
+            it("should generate lesser predicate", function(){
+                heap = BinaryHeapR(2).predicate().lesser();
+
+                expect(heap._predicate(1, 5)).to.be.ok;
+            });
         });
     });
 
