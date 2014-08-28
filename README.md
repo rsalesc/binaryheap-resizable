@@ -106,6 +106,7 @@ var predicate = function(a, b){
 }
 
 // BinaryHeap(capacity).predicate(predicate).value([path [, default-value]])
+// value() function returns a BinaryHeap object reference that can be used
 
 var heap1 = BinaryHeap(4).predicate(predicate).value('priority');
 var heap2 = BinaryHeap(4).predicate(predicate).value('priority', 1);
@@ -115,7 +116,7 @@ var heap2 = BinaryHeap(4).predicate(predicate).value('priority', 1);
 
 This code does basically what the deprecated code does, but you can define a solid behavior when dealing with properties passing a `path` argument to deep find that property, or even pass a `default-value` argument to be set as default value when a property does not exist, avoiding access errors.
 
-When comparing it does exactly this (pseudo-code):
+When comparing it does something like this: (pseudo-code):
 ```javascript
 // heap1
 a.priority < b.priority or throw an error if property priority does not exist
@@ -129,4 +130,13 @@ a.priority < 1 if property priority exists only in a object
 1 < 1 if property priority does not exist in both objects
 ```
 
+##### Preset-based way
 
+The preset-based way is just what we described above, passing no arguments to `predicate` and using `greater()` and `lesser()` in place of `value()`. Using this we can quickly build max/min-heaps from raw numbers or numbers from deep objects properties.
+
+```javascript
+var heap1 = BinaryHeap(4).predicate().greater('priority', 1);
+// max-heap comparing (a.priority or 1) > (b.priority or 1)
+var heap2 = BinaryHeap(4).predicate().lesser('info.relevance', 2);
+// min-heap comparing (a.info.relevance or 2) < (b.info.relevance or 2)
+```
