@@ -6,6 +6,30 @@
 # Resizable Binary Heap
 ---
 
+### Installation
+`npm install binaryheap-resizable`
+
+### Testing
+`npm test`
+
+### Simple usage
+
+```javascript
+var maxHeap = BinaryHeap([5, 3, 2]).maxHeap();
+    or
+var maxHeap = BinaryHeap([5, 3, 2]).predicate().greater();
+// set it up as a simple max-heap
+// its initial length is 3 and its inital data is the maxHeapified
+// version of the passed array
+
+var minObjectHeap = BinaryHeap(4).minHeap('priority');
+    or
+var minObjectHeap = BinaryHeap(4).predicate().lesser('priority');
+// set it up as a object min-heap of initial length equals to 4
+// compare objects from the heap by their priority property
+// when inserted/pulled, throw an error if property does not exist
+```
+
 ### What package is that?
 
 Exactly what the package name says it is. It's a resizable binary heap.
@@ -16,7 +40,7 @@ With `binaryheap-resizable` you can pre-allocate an array space for your binary 
 
 ### But what? I don't want my application to be re-allocating memory for a heap all the time!
 
-That's why `binaryheap-resizable` got a `resizeFactor` property. Every time the heap data array is expanded, it's expanded to `BinaryHeap.length * 2`. You specify how much your array will be expanded/shrinked, so depending on your array initial size and on your demands you can control how often the application will be re-allocating memory to the heap.
+That's why `binaryheap-resizable` got a `resizeFactor` property. Every time the heap data array is expanded, it's expanded to `BinaryHeap.length * resizaFactor`. You specify how much your array will be expanded/shrinked, so depending on your array initial size and on your demands you can control how often the application will be re-allocating memory to the heap. `resizeFactor` default value is `2`.
 
 ### Ok. Since it's a binary heap, how can I control the ordering criteria?
 
@@ -33,41 +57,6 @@ So we have a pseudo-code which:
 predicate(top-element, child-n) is truthy for n 1..top-element-child-count
 ```
 
-We can have a min-heap predicate only by switching the relational operator:
-```javascript
-var predicate = function(a, b){
-    return a < b;
-}
-```
-
-You can implement the criteria you want. It's all up to you. We have to watch out for some specific cases, though. Null-objects can't be inserted to the heap. An error will be certainly throwed. However, nothing prevents you from adding a solid object which contains a null property. Let's see an example:
-
-```javascript
-var predicate = function(a, b){
-    return a.relevance > b.relevance;
-}
-
-predicate({relevance: 1}, {});
-predicate({relevance: 1}, {relevance: null});
-```
-
-Both `predicate()` calls right above will not result in error, since undefined and null are still comparable, producing a unpredictable behavior. It's not what most of programmers want, so, if its not what you wait from the algorithm, you should better use a deep find algorithm which throws an error if an object property is not a solid object, right inside the predicate.
-
-In another study-case example we have:
-
-```javascript
-var predicate = function(a, b){
-    return a.info.relevance > b.info.relevance;
-}
-
-predicate({info: { relevance: 1}}, {info: null});
-predicate({info: { relevance: 1}}, {});
-```
-
-Now in both calls above we will notice that an error is throwed. That's because we can't access a non-existent object property. In this case, we can't access the property `relevance` of `undefined`/`null`.
-
-So, it's up to you to control the predicate flow, to prevent errors from ocurrying if necessary or similar things using this `predicate` approach.
-
 So in version `0.0.7` we introduced new ways of handling predicates. We will be discussing about them right below.
 
 ### Multiple ways of handling predicates
@@ -75,4 +64,84 @@ So in version `0.0.7` we introduced new ways of handling predicates. We will be 
 
 In older versions we had only the basic way of dealing with predicates. It was really hard to deal with errors and to keep things going smooth when going through non-existent objects. Version `0.0.7` introduced major changes related to the way predicates were set up. It's important to say that projects that were built on top of older versions are still perfectly compatible with this new version.
 
+##### Default method, in constructor
 
+The old version way is still available but **we highly recommend you to avoid it** for non-number objects. Here's the min-heap predicate example.
+
+```javascript
+var predicate = function(a, b){
+    return a < b;
+}
+
+var heap = new BinaryHeap(4, predicate);
+// create a min-heap with initial capacity of 4
+```
+
+This method can not handle object properties very well.
+
+##### Deep finding way
+
+In `0.0.7` the functional way of handling predicates was introduced. It's now simple to define your predicate and control the behavior of your application when dealing with deep objects. Let's say you want to order a max-heap by their `priority` properties. In the old fashioned way you would do something like this:
+
+```javascript
+// old deprecated way
+var predicate = function(a, b){
+    return a.priority > b.priority;
+}
+
+var heap = new BinaryHeap(4, predicate);
+// you will probably have problems dealing with non-existent objects or null properties
+```
+
+You could avoid the problems by rewriting your `predicate` code to check for these problems before doing the real job. But it's just **awful**. Then we introduce you a clean way of dealing with these issues.
+
+```javascript
+// a and b are now real values
+var predicate = function(a, b){
+    return a < b;
+}
+
+// BinaryHeap(capacity).predicate(predicate).value([path [, default-value]])
+// value() function returns a BinaryHeap object reference that can be used
+
+var heap1 = BinaryHeap(4).predicate(predicate).value('priority');
+var heap2 = BinaryHeap(4).predicate(predicate).value('priority', 1);
+// heap1 inserts and pulls may throw an error when priority property does not exist
+// heap2 inserts and pulls will set a default value to be compared when priority property does not exist
+```
+
+This code does basically what the deprecated code does, but you can define a solid behavior when dealing with properties passing a `path` argument to deep find that property, or even pass a `default-value` argument to be set as default value when a property does not exist, avoiding access errors.
+
+When comparing it does something like this: (pseudo-code):
+```javascript
+// heap1
+a.priority < b.priority or throw an error if property priority does not exist
+// heap2
+a.priority < b.priority if property priority exists in both objects
+    or
+1 < b.priority if property priority exists only in b object
+    or
+a.priority < 1 if property priority exists only in a object
+    or
+1 < 1 if property priority does not exist in both objects
+```
+
+##### Preset-based way
+
+The preset-based way is just what we described above, passing no arguments to `predicate` and using `greater()` and `lesser()` in place of `value()`. Using this we can quickly build max/min-heaps from raw numbers or numbers from deep objects properties.
+
+```javascript
+var heap1 = BinaryHeap(4).predicate().greater('priority', 1);
+// max-heap comparing (a.priority or 1) > (b.priority or 1)
+var heap2 = BinaryHeap(4).predicate().lesser('info.relevance', 2);
+// min-heap comparing (a.info.relevance or 2) < (b.info.relevance or 2)
+```
+
+We can also use the aliases to `predicate().greater()` and `predicate().lesser()`
+
+```javascript
+var heap1 = BinaryHeap(4).maxHeap('priority', 1);
+// max-heap comparing (a.priority or 1) > (b.priority or 1)
+var heap2 = BinaryHeap(4).minHeap('info.relevance', 2);
+// min-heap comparing (a.info.relevance or 2) < (b.info.relevance or 2)
+```
