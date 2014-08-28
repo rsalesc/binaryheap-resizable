@@ -32,7 +32,7 @@ With `binaryheap-resizable` you can pre-allocate an array space for your binary 
 
 ### But what? I don't want my application to be re-allocating memory for a heap all the time!
 
-That's why `binaryheap-resizable` got a `resizeFactor` property. Every time the heap data array is expanded, it's expanded to `BinaryHeap.length * 2`. You specify how much your array will be expanded/shrinked, so depending on your array initial size and on your demands you can control how often the application will be re-allocating memory to the heap.
+That's why `binaryheap-resizable` got a `resizeFactor` property. Every time the heap data array is expanded, it's expanded to `BinaryHeap.length * resizaFactor`. You specify how much your array will be expanded/shrinked, so depending on your array initial size and on your demands you can control how often the application will be re-allocating memory to the heap. `resizeFactor` default value is `2`.
 
 ### Ok. Since it's a binary heap, how can I control the ordering criteria?
 
@@ -48,6 +48,8 @@ So we have a pseudo-code which:
 ```
 predicate(top-element, child-n) is truthy for n 1..top-element-child-count
 ```
+
+###~~DEPRECATED~~
 
 You can implement the criteria you want. It's all up to you. We have to watch out for some specific cases, though. Null-objects can't be inserted to the heap. An error will be certainly throwed. However, nothing prevents you from adding a solid object which contains a null property. Let's see an example:
 
