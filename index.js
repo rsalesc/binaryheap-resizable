@@ -180,9 +180,11 @@ BinaryHeapR.prototype.minHeap = function(path, def){
 
 BinaryHeapR.prototype.reinsert = function(){
     var old = this.data;
+    var old_size = this.size;
     this.data = new Array(old.length);
     this.data[0] = null;
-    for(var i = 1; i <= this.size; i++){
+    this.size = 0;
+    for(var i = 1; i <= old_size; i++){
         this.insert(old[i]);
     }
 };

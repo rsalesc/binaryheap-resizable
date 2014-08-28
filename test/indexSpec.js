@@ -145,15 +145,15 @@ describe("BinaryHeapR", function(){
         });
     });
 
-    /*describe("reinsert()", function(){
+    describe("reinsert()", function(){
         var heap = BinaryHeapR(4);
 
         it("should reallocate array keeping the values intact", function(){
             heap.insert([5, 3, 1]);
             heap.reinsert();
-            expect(heap.data).to.equals([null, 5, 3, 1]);
+            expect(heap.data).to.deep.equals([null, 5, 3, 1]);
         });
-    });*/
+    });
 
     describe("predicate()", function(){
         var heap = BinaryHeapR(2);
