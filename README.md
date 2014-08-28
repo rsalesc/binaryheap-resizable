@@ -21,7 +21,7 @@ That's why `binaryheap-resizable` got a `resizeFactor` property. Every time the 
 
 ### Ok. Since it's a binary heap, how can I control the ordering criteria?
 
-The heap has a `predicate()` get/setter method. You can set the binary heap predicate by passing a function `fn(a, b)` as an argument, where `a` is the parent element and `b` is its child. By default `binaryheap-resizable` has a `predicate` set to a max-heap predicate.
+The heap constructor has an argument called `predicate`. You can set the binary heap predicate by passing a function `fn(a, b)` as that argument, where `a` is the parent element and `b` is its child. By default `binaryheap-resizable` has a `predicate` set to a max-heap predicate.
 
 ```javascript
 var predicate = function(a, b){
@@ -67,12 +67,12 @@ predicate({info: { relevance: 1}}, {});
 
 Now in both calls above we will notice that an error is throwed. That's because we can't access a non-existent object property. In this case, we can't access the property `relevance` of `undefined`/`null`.
 
-So, it's up to you to control the predicate flow, to prevent errors from ocurrying if necessary or similar things using this `predicate()` approach.
+So, it's up to you to control the predicate flow, to prevent errors from ocurrying if necessary or similar things using this `predicate` approach.
 
 So in version `0.0.7` we introduced new ways of handling predicates. We will be discussing about them right below.
 
 ### Multiple ways of handling predicates
-*`>= 0.0.7`*
+###### >= 0.0.7
 
 In older versions we had only the basic way of dealing with predicates. It was really hard to deal with errors and to keep things going smooth when going through non-existent objects. Version `0.0.7` introduced major changes related to the way predicates were set up. It's important to say that projects that were built on top of older versions are still perfectly compatible with this new version.
 
