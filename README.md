@@ -148,3 +148,12 @@ var heap1 = BinaryHeap(4).predicate().greater('priority', 1);
 var heap2 = BinaryHeap(4).predicate().lesser('info.relevance', 2);
 // min-heap comparing (a.info.relevance or 2) < (b.info.relevance or 2)
 ```
+
+We can also build use the aliases to `predicate().greater()` and `predicate().lesser()`
+
+```javascript
+var heap1 = BinaryHeap(4).maxHeap('priority', 1);
+// max-heap comparing (a.priority or 1) > (b.priority or 1)
+var heap2 = BinaryHeap(4).minHeap('info.relevance', 2);
+// min-heap comparing (a.info.relevance or 2) < (b.info.relevance or 2)
+```
