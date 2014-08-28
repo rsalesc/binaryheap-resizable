@@ -9,9 +9,17 @@
 ### Simple usage
 
 ```javascript
-var heap = BinaryHeap(4).predicate().greater('priority');
+var maxHeap = BinaryHeap(4).maxHeap();
+    or
+var maxHeap = BinaryHeap(4).predicate().greater();
+// set it up as a simple max-heap
+
+var minObjectHeap = BinaryHeap(4).minHeap('priority');
+    or
+var minObjectHeap = BinaryHeap(4).predicate().lesser('priority');
+// set it up as a object min-heap
 // compare objects from the heap by their priority property
-// throw an error if it does not exist
+// when inserted/pulled, throw an error if property does not exist
 ```
 
 ### What package is that?
