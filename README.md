@@ -33,13 +33,6 @@ So we have a pseudo-code which:
 predicate(top-element, child-n) is truthy for n 1..top-element-child-count
 ```
 
-We can have a min-heap predicate only by switching the relational operator:
-```javascript
-var predicate = function(a, b){
-    return a < b;
-}
-```
-
 You can implement the criteria you want. It's all up to you. We have to watch out for some specific cases, though. Null-objects can't be inserted to the heap. An error will be certainly throwed. However, nothing prevents you from adding a solid object which contains a null property. Let's see an example:
 
 ```javascript
@@ -74,5 +67,66 @@ So in version `0.0.7` we introduced new ways of handling predicates. We will be 
 ###### *>= 0.0.7*
 
 In older versions we had only the basic way of dealing with predicates. It was really hard to deal with errors and to keep things going smooth when going through non-existent objects. Version `0.0.7` introduced major changes related to the way predicates were set up. It's important to say that projects that were built on top of older versions are still perfectly compatible with this new version.
+
+##### Default method, in constructor
+
+The old version way is still available but **we highly recommend you to avoid it** for non-number objects. Here's the min-heap predicate example.
+
+```javascript
+var predicate = function(a, b){
+    return a < b;
+}
+
+var heap = new BinaryHeap(4, predicate);
+// create a min-heap with initial capacity of 4
+```
+
+This method can not handle object properties very well.
+
+##### Deep finding way
+
+In `0.0.7` the functional way of handling predicates was introduced. It's now simple to define your predicate and control the behavior of your application when dealing with deep objects. Let's say you want to order a max-heap by their `priority` properties. In the old fashioned way you would do something like this:
+
+```javascript
+// old deprecated way
+var predicate = function(a, b){
+    return a.priority > b.priority;
+}
+
+var heap = new BinaryHeap(4, predicate);
+// you will probably have problems dealing with non-existent objects or null properties
+```
+
+You could avoid the problems by rewriting your `predicate` code to check for these problems before doing the real job. But it's just **awful**. Then we introduce you a clean way of dealing with these issues.
+
+```javascript
+// a and b are now real values
+var predicate = function(a, b){
+    return a < b;
+}
+
+// BinaryHeap(capacity).predicate(predicate).value([path [, default-value]])
+
+var heap1 = BinaryHeap(4).predicate(predicate).value('priority');
+var heap2 = BinaryHeap(4).predicate(predicate).value('priority', 1);
+// heap1 inserts and pulls may throw an error when priority property does not exist
+// heap2 inserts and pulls will set a default value to be compared when priority property does not exist
+```
+
+This code does basically what the deprecated code does, but you can define a solid behavior when dealing with properties passing a `path` argument to deep find that property, or even pass a `default-value` argument to be set as default value when a property does not exist, avoiding access errors.
+
+When comparing it does exactly this (pseudo-code):
+```javascript
+// heap1
+a.priority < b.priority or throw an error if property priority does not exist
+// heap2
+a.priority < b.priority if property priority exists in both objects
+    or
+1 < b.priority if property priority exists only in b object
+    or
+a.priority < 1 if property priority exists only in a object
+    or
+1 < 1 if property priority does not exist in both objects
+```
 
 
