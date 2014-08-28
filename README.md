@@ -9,15 +9,17 @@
 ### Simple usage
 
 ```javascript
-var maxHeap = BinaryHeap(4).maxHeap();
+var maxHeap = BinaryHeap([5, 3, 2]).maxHeap();
     or
-var maxHeap = BinaryHeap(4).predicate().greater();
+var maxHeap = BinaryHeap([5, 3, 2]).predicate().greater();
 // set it up as a simple max-heap
+// its initial length is 3 and its inital data is the maxHeapified
+// version of the passed array
 
 var minObjectHeap = BinaryHeap(4).minHeap('priority');
     or
 var minObjectHeap = BinaryHeap(4).predicate().lesser('priority');
-// set it up as a object min-heap
+// set it up as a object min-heap of initial length equals to 4
 // compare objects from the heap by their priority property
 // when inserted/pulled, throw an error if property does not exist
 ```
