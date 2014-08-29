@@ -1,7 +1,7 @@
 {
     "author" : "Roberto Sales <robertosalesc@dcc.ufba.br>",
     "name": "binaryheap-resizable",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "binary heap implemented over a resizable array with multiple ways of handling predicates",
     "keywords": ["binary", "heap", "predicate", "tree", "resizable", "binary heap"],
     "scripts" : {
