@@ -33,27 +33,27 @@ var minObjectHeap = BinaryHeap(4).predicate().lesser('priority');
 ### API
 
 ##### Constructors
-`constructor(initial-length)` - build an empty heap with `initial-length` size.
-`constructor(array)` - heapify `array`. initial length is set to `array.length`.
+1. `constructor(initial-length)` - build an empty heap with `initial-length` size.
+2. `constructor(array)` - heapify `array`. initial length is set to `array.length`.
 
 ##### Predicates
-`predicate().greater([ property [, default]])` - set heap as max-heap. if `property` is set, elements `property` values will be used when comparing. if this value is not accessible and `default` is set, `default` will be used instead.
-`predicate().lesser([ property [, default]])` - same as above, but it will set heap as min-heap.
-`predicate(fn).value([ property [, default]])` - same as above, but it will use `fn` as the predicate
-`maxHeap()` - alias for `predicate().greater()`
-`minHeap()` - alias for `predicate().lesser()`
+1. `predicate().greater([ property [, default]])` - set heap as max-heap. if `property` is set, elements `property` values will be used when comparing. if this value is not accessible and `default` is set, `default` will be used instead.
+2. `predicate().lesser([ property [, default]])` - same as above, but it will set heap as min-heap.
+3. `predicate(fn).value([ property [, default]])` - same as above, but it will use `fn` as the predicate
+4. `maxHeap()` - alias for `predicate().greater()`
+5. `minHeap()` - alias for `predicate().lesser()`
 
 ##### Data management methods
-`insert(elements..), insert(array-of-elements)` - insert all passed elements in the heap, doing reallocations if necessary. returns new heap size. alias `push()`.
-`peek()` - return the root element of the heap or null if heap is empty.
-`pull()` - peek and remove the peeked element from the heap if its not null. alias `pop()`
-`resizeFactor([factor])` - get/set how much the heap buffer will expand/shrink when needed. default is `2`.
-`resize(n)` - manually resize the heap buffer to `n`.
-`toArray()` - return an array representation of the heap
+1. `insert(elements..), insert(array-of-elements)` - insert all passed elements in the heap, doing reallocations if necessary. returns new heap size. alias `push()`.
+2. `peek()` - return the root element of the heap or null if heap is empty.
+3. `pull()` - peek and remove the peeked element from the heap if its not null. alias `pop()`
+4. `resizeFactor([factor])` - get/set how much the heap buffer will expand/shrink when needed. default is `2`.
+5. `resize(n)` - manually resize the heap buffer to `n`.
+6. `toArray()` - return an array representation of the heap
 
 ##### Properties
-`size` - store how many elements are on the heap.
-`length` - get the length of the heap buffer.
+1. `size` - store how many elements are on the heap.
+2. `length` - get the length of the heap buffer.
 
 ### What package is that?
 
