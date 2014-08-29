@@ -145,3 +145,5 @@ var heap1 = BinaryHeap(4).maxHeap('priority', 1);
 var heap2 = BinaryHeap(4).minHeap('info.relevance', 2);
 // min-heap comparing (a.info.relevance or 2) < (b.info.relevance or 2)
 ```
+
+### Api Docs Coming Soon
