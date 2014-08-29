@@ -96,7 +96,7 @@ BinaryHeapR.prototype.peek = function () {
     return null;
   return this.data[1];
 };
-BinaryHeapR.prototype.pull = function () {
+BinaryHeapR.prototype.pull = BinaryHeapR.prototype.pop = function () {
   if (this.size === 0)
     return null;
   var item = this.data[1];
